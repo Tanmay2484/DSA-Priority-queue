@@ -1,0 +1,30 @@
+/* 703. Kth Largest Element in a Stream
+Link:https://leetcode.com/problems/kth-largest-element-in-a-stream/description/
+
+*/
+class KthLargest {
+private:
+    
+    vector<int> ourVec;
+    int endIndex;
+    
+public:
+    KthLargest(int k, vector<int>& nums) {
+        ourVec = nums;
+        endIndex = k;
+        // Iniitially sort the vector in reverse order. Yes, I know this is n log(n), please
+		// see below.
+        sort(ourVec.begin(), ourVec.end(), [](const int& A, const int& B){return A > B;});
+    }
+    
+    int add(int val) {
+        ourVec.push_back(val);
+        for (int i{}; i < endIndex; ++i) {
+            // Then only sort the first X elements.
+			// Here we are O(k) runtime. Since this makes up the bulk of the 
+			// function calls, we say this code is AVERAGE O(k).
+            if (ourVec[i] < ourVec.back()) swap(ourVec[i], ourVec.back());
+        }
+        return ourVec[endIndex - 1];
+    }
+};
